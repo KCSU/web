@@ -5,6 +5,7 @@ import {
   API_URL, POLL_MS, TIMEOUT_MS, formatDate, formatUpdated, historyDates, isUp,
   type Site, type Uptime as UptimeData,
 } from '../lib/uptime';
+import { IncidentCard } from './Incidents';
 
 export default function Uptime() {
   const uptime = usePolledUptime();
@@ -21,15 +22,26 @@ export default function Uptime() {
   if (!uptime) return <Loading />;
 
   const dates = historyDates(new Date());
+  const now = Date.now() / 1000;
+  const incidents = (uptime.notices ?? []).filter((notice) => notice.kind === 'incident');
+  const hasIncidents = incidents.length > 0;
   const allUp = uptime.sites.every((site) => !site.latest || isUp(site));
+  // An open incident turns the banner red nonetheless.
+  const colour = allUp && !hasIncidents ? 'bg-up' : 'bg-down';
+  const headline = !allUp ? 'Some systems are down'
+    : hasIncidents ? 'Some systems are having problems'
+    : 'All systems operational';
   return (
     <>
-      <Banner colour={allUp ? 'bg-up' : 'bg-down'}>
-        {allUp ? 'All systems operational' : 'Some systems are down'}
-        <small class="block text-[0.8rem] opacity-85">
-          Last updated: {formatUpdated(uptime.updated_at)}
-        </small>
-      </Banner>
+      <div>
+        <Banner colour={colour} rounded={hasIncidents ? 'rounded-t-lg' : 'rounded-lg'}>
+          {headline}
+          <small class="block text-[0.8rem] opacity-85">
+            Last updated: {formatUpdated(uptime.updated_at)}
+          </small>
+        </Banner>
+        {incidents.map((notice) => <IncidentCard key={notice.id} notice={notice} sites={uptime.sites} now={now} />)}
+      </div>
       {uptime.sites.map((site) => <SiteCard key={site.id} site={site} dates={dates} />)}
     </>
   );
@@ -73,8 +85,12 @@ function usePolledUptime(): UptimeData | 'failed' | null {
   return uptime ?? (failed ? 'failed' : null);
 }
 
-function Banner({ colour, children }: { colour: string; children: ComponentChildren }) {
-  return <div class={`rounded-lg px-4 py-3 text-[20px] font-normal text-white ${colour}`}>{children}</div>;
+function Banner({ colour, rounded = 'rounded-lg', children }: {
+  colour: string;
+  rounded?: string;
+  children: ComponentChildren;
+}) {
+  return <div class={`px-4 py-3 text-[20px] font-normal text-white ${rounded} ${colour}`}>{children}</div>;
 }
 
 /** How many placeholder cards to show while loading. */
@@ -109,7 +125,7 @@ function Placeholder({ width }: { width: string }) {
 
 function SiteCard({ site, dates }: { site: Site; dates: string[] }) {
   return (
-    <section class="mt-4 rounded-lg bg-card p-4">
+    <section id={`site-${site.id}`} class="mt-4 rounded-lg bg-card p-4">
       <div class="flex flex-wrap justify-between gap-2">
         <a class="font-semibold hover:underline" href={site.url}>{site.name}</a>
         <SiteState site={site} />

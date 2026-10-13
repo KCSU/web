@@ -7,11 +7,17 @@
   --color-down: #d0343a;
   --color-nodata: #d4d4d4;
   --color-pending: #6b6b6b;
+  --color-incident-fg: #a3262c;
+  --color-incident-bg: #fdf1f1;
+  --color-incident-border: #efc9cb;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-nodata: #3a3a3a;
     --color-pending: #4a4a4a;
+    --color-incident-fg: #f29a9e;
+    --color-incident-bg: #2a1517;
+    --color-incident-border: #5a2a2d;
   }
 }

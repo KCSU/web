@@ -1,5 +1,7 @@
 // Fetch and process data returned by admin API's /api/uptime.
 
+import type { Notice } from './notices';
+
 /** A health check returned by /api/uptime. */
 export interface Check {
   /** Unix seconds. */
@@ -28,6 +30,7 @@ export interface Site {
 export interface Uptime {
   updated_at: number;
   sites: Site[];
+  notices?: Notice[];
 }
 
 export const API_URL = 'https://admin.kcsu.org.uk/api/uptime';
