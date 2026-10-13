@@ -1,0 +1,131 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { faArrowRight, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import Icon from './Icon.astro';
+
+interface HeroImage {
+  src: ImageMetadata;
+  alt: string;
+  position?: string;
+}
+
+interface Props {
+  images: HeroImage[];
+  /** Accessible name for the slideshow. */
+  label: string;
+  logo?: ImageMetadata;
+  title?: string;
+  subtitle?: string;
+  cta?: { href: string; label: string };
+}
+
+const { images, label, logo, title, subtitle, cta } = Astro.props;
+
+// Shown straight away on touch screens (no hover) and on keyboard focus; on hover otherwise.
+const arrowClass = 'absolute top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/75 text-white size-10 sm:size-12 md:size-14 flex items-center justify-center rounded-full pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100 pointer-fine:group-focus-within:opacity-100 focus-visible:outline-2 focus-visible:outline-white transition-opacity duration-200 z-30';
+---
+
+<section class="relative h-[50vh] group" aria-roledescription="carousel" aria-label={label} data-hero>
+  <div class="relative w-full h-full overflow-hidden">
+    <div class="flex h-full transition-transform duration-500 ease-in-out motion-reduce:transition-none" data-hero-track>
+      {images.map((image, index) => (
+        <div
+          class="w-full h-full shrink-0"
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${index + 1} of ${images.length}`}
+          aria-hidden={index !== 0 ? 'true' : undefined}
+          inert={index !== 0}
+        >
+          <Image
+            src={image.src}
+            alt={image.alt}
+            class="w-full h-full object-cover object-center"
+            style={image.position && `object-position: ${image.position}`}
+            widths={[800, 1280, 1920, 2560]}
+            sizes="100vw"
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchpriority={index === 0 ? 'high' : 'auto'}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {images.length > 1 && (
+    <>
+      <button type="button" class={`${arrowClass} left-2 sm:left-4`} aria-label="Previous image" data-hero-prev>
+        <Icon icon={faChevronLeft} class="text-xl sm:text-2xl" />
+      </button>
+      <button type="button" class={`${arrowClass} right-2 sm:right-4`} aria-label="Next image" data-hero-next>
+        <Icon icon={faChevronRight} class="text-xl sm:text-2xl" />
+      </button>
+    </>
+  )}
+
+  <div class="absolute inset-0 bg-black/70 flex items-center justify-center z-20">
+    <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 px-4">
+      {logo && <Image src={logo} alt="" height={288} loading="eager" class="size-28 sm:size-32 md:size-36 object-contain mb-4 sm:mb-0" />}
+      <div class="text-white text-center sm:text-left">
+        {title && <h1 class="text-3xl md:text-5xl font-bold mb-2 md:mb-4">{title}</h1>}
+        {subtitle && <p class="text-lg md:text-xl mb-4">{subtitle}</p>}
+        {cta && (
+          <a
+            href={cta.href}
+            class="inline-flex items-center px-4 py-1 text-lg font-semibold text-white border-2 border-white rounded-lg hover:bg-white hover:text-gray-900 transition-colors duration-200"
+          >
+            {cta.label}
+            <Icon icon={faArrowRight} class="ml-2" />
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const INTERVAL_MS = 5000;
+  // Visitors who've asked for reduced motion will have autoplay disabled.
+  const autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-hero]').forEach((hero) => {
+    const track = hero.querySelector<HTMLElement>('[data-hero-track]')!;
+    const slides = Array.from(track.children) as HTMLElement[];
+    if (slides.length < 2) return;
+
+    let currentIndex = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let hovering = false;
+
+    const show = (index: number) => {
+      currentIndex = (index + slides.length) % slides.length;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      slides.forEach((slide, i) => {
+        const hidden = i !== currentIndex;
+        slide.toggleAttribute('inert', hidden);
+        if (hidden) slide.setAttribute('aria-hidden', 'true');
+        else slide.removeAttribute('aria-hidden');
+      });
+    };
+
+    // (Re)start the timer for running the slideshow.
+    const sync = () => {
+      clearInterval(timer);
+      timer = autoplay && !hovering && !hero.contains(document.activeElement)
+        ? setInterval(() => show(currentIndex + 1), INTERVAL_MS)
+        : undefined;
+    };
+
+    hero.querySelector('[data-hero-prev]')?.addEventListener('click', () => { show(currentIndex - 1); sync(); });
+    hero.querySelector('[data-hero-next]')?.addEventListener('click', () => { show(currentIndex + 1); sync(); });
+
+    // Hold still while the pointer or keyboard focus is on the slideshow.
+    hero.addEventListener('mouseenter', () => { hovering = true; sync(); });
+    hero.addEventListener('mouseleave', () => { hovering = false; sync(); });
+    hero.addEventListener('focusin', sync);
+    hero.addEventListener('focusout', () => setTimeout(sync));
+
+    sync();
+  });
+</script>

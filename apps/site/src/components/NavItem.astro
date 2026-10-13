@@ -1,0 +1,69 @@
+---
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Icon from './Icon.astro';
+
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  label: string;
+  items: NavLink[];
+}
+
+const { label, items } = Astro.props;
+const menuId = `nav-menu-${label.toLowerCase().replace(/\W+/g, '-')}`;
+---
+
+<li class="relative group" data-nav-dropdown>
+  <button
+    type="button"
+    class="text-white px-3 py-2 rounded-md text-lg font-normal hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white transition-colors inline-flex items-center"
+    aria-expanded="false"
+    aria-controls={menuId}
+  >
+    {label}
+    <Icon icon={faChevronDown} class="ml-1.5 text-xs" />
+  </button>
+  <div
+    id={menuId}
+    class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-data-open:opacity-100 group-data-open:visible transition-all duration-200 ease-in-out"
+  >
+    <div class="py-1 rounded-md shadow-lg border border-gray-200/20 bg-primary">
+      {items.map((item) => (
+        <a href={item.href} class="block px-4 py-2 text-sm text-white hover:bg-white/10 focus-visible:bg-white/10 focus-visible:outline-none">
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</li>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-nav-dropdown]').forEach((item) => {
+    const button = item.querySelector('button')!;
+
+    const setOpen = (open: boolean) => {
+      item.toggleAttribute('data-open', open);
+      button.setAttribute('aria-expanded', String(open));
+    };
+
+    button.addEventListener('click', () => setOpen(!item.hasAttribute('data-open')));
+
+    item.addEventListener('focusout', (event) => {
+      if (!item.contains(event.relatedTarget as Node | null)) setOpen(false);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!item.contains(event.target as Node)) setOpen(false);
+    });
+
+    item.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && item.hasAttribute('data-open')) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+  });
+</script>

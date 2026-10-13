@@ -1,0 +1,84 @@
+---
+import Copyright from '@kcsu/ui/Copyright.astro';
+import { external, pages } from '../data/links';
+
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+interface FooterSection {
+  title: string;
+  links: FooterLink[];
+}
+
+const sections: FooterSection[] = [
+  {
+    title: 'Quick Links',
+    links: [
+      { label: 'About Us', href: pages.exec },
+      { label: 'College Map', href: pages.collegeMap },
+      { label: 'College Website', href: external.college },
+    ],
+  },
+  {
+    title: 'Societies',
+    links: [
+      { label: 'Academic Societies', href: pages.academicSocieties },
+      { label: 'Sports Societies', href: pages.sportsSocieties },
+      { label: 'Other Societies', href: pages.otherSocieties },
+    ],
+  },
+  {
+    title: 'Follow Us',
+    links: [
+      { label: 'Facebook', href: external.facebook },
+      { label: 'Instagram', href: external.instagram },
+    ],
+  },
+];
+
+const bottomLinkClass = 'text-gray-400 hover:text-white transition-colors duration-200';
+---
+
+<footer class="text-white">
+  <div class="bg-neutral-800 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-2">Address</h3>
+          <address class="not-italic text-gray-300 leading-relaxed">
+            King’s College<br />
+            King’s Parade<br />
+            Cambridge<br />
+            CB2 1ST
+          </address>
+        </div>
+        {sections.map((section) => (
+          <div>
+            <h3 class="text-lg font-semibold mb-2">{section.title}</h3>
+            <ul class="space-y-2 text-gray-300">
+              {section.links.map((link) => (
+                <li>
+                  <a href={link.href} class="hover:text-white">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-neutral-900 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="text-center flex flex-wrap justify-center items-center gap-3">
+        <p class="text-gray-400"><Copyright /></p>
+        <div class="h-4 border-l border-gray-600" aria-hidden="true"></div>
+        <a href={external.privacyPolicy} class={bottomLinkClass}>
+          Privacy Policy
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

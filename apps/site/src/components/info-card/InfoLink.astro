@@ -1,0 +1,20 @@
+---
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import Icon from '../Icon.astro';
+
+interface Props {
+  href: string;
+  label: string;
+  /** Only for links that aren't plain web pages, e.g. a PDF or an email address. */
+  icon?: IconDefinition;
+}
+
+const { href, label, icon } = Astro.props;
+---
+
+<li>
+  <a href={href} class="inline-flex items-center text-blue-600 underline underline-offset-2 visited:text-primary hover:decoration-2">
+    {label}
+    {icon && <Icon icon={icon} class="ml-1.5 text-xs" />}
+  </a>
+</li>

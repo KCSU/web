@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import kingsLogo from '../assets/kings-college-logo.png';
+
+// No permission or attribution required under the Unsplash License.
+// https://unsplash.com/photos/FC1uuekWoZc (Tim Alex)
+// https://unsplash.com/photos/y-3pw0FHsYQ (Chris Boland)
+import chapelGibbs from '../assets/kings-college/chapel-gibbs.jpg';
+import chapelMeadow from '../assets/kings-college/chapel-meadow.jpg';
+
+import Hero from '../components/Hero.astro';
+import InfoCard from '../components/info-card/InfoCard.astro';
+import InfoLink from '../components/info-card/InfoLink.astro';
+import { external, pages } from '../data/links';
+
+import {
+  faBus,
+  faEnvelope,
+  faFileLines,
+  faGlobe,
+  faHandshakeAngle,
+  faPhone,
+  faScrewdriverWrench,
+  faUtensils,
+} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope as faEnvelopeRegular, faFile, faFilePdf } from '@fortawesome/free-regular-svg-icons';
+
+const heroImages = [
+  { src: chapelGibbs, alt: 'King’s College Chapel and the Gibbs Building across the lawn on a sunny day', position: 'center 45%' },
+  { src: chapelMeadow, alt: 'King’s College Chapel seen across a meadow of wildflowers', position: 'center 70%' },
+];
+---
+
+<BaseLayout description="The undergraduate student union at King’s College, Cambridge. Find welfare contacts, societies, formal booking, maintenance requests and college resources here.">
+  <Hero
+    images={heroImages}
+    label="Photos of King’s College"
+    logo={kingsLogo}
+    title="King’s College SU"
+    subtitle="Your undergraduate representative body"
+    cta={{ href: pages.exec, label: 'Learn more about us' }}
+  />
+
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white p-6 rounded-md shadow-md mb-8 border-l-[6px] border-primary">
+        <p class="text-gray-900">
+          Welcome to the KCSU website! We are the student-elected
+          representatives for the undergraduate students here at King’s. This
+          platform serves as a place for resources, support, and information you
+          may need throughout your time here.
+        </p>
+      </div>
+
+      {/* Cards flow down each column in turn; the browser balances the column heights. */}
+      <div class="columns-1 md:columns-3 gap-8 *:not-last:mb-8 *:break-inside-avoid">
+        <InfoCard title="Food and Menus" icon={faUtensils}>
+          <InfoLink href={external.formalBooking} label="Formal Booking (KiFoMaSy)" />
+          <InfoLink href={external.epos} label="EPOS Top-up" />
+        </InfoCard>
+
+        <InfoCard title="Contact List" icon={faPhone}>
+          <InfoLink href={external.portersPhone} label="Porters: +44 (0)1223 331100" />
+        </InfoCard>
+
+        <InfoCard title="Transport" icon={faBus}>
+          <InfoLink href={external.busTimes} label="Real-time Bus Information" />
+          <InfoLink href={external.trainTimes} label="Train Arrivals & Departures" />
+          <InfoLink href={pages.collegeMap} label="College Map" icon={faFilePdf} />
+        </InfoCard>
+
+        <InfoCard title="Welfare Contacts" icon={faHandshakeAngle}>
+          <InfoLink href={external.supportInfoSheet} label="Financial & Psychological Support Info Sheet" icon={faFile} />
+          <InfoLink href={external.studentSupport} label="King’s College Student Support" />
+          <InfoLink href={external.counselling} label="University Counselling Service" />
+          <InfoLink href={external.cambridgeSuAdvice} label="Cambridge SU Advice Service" />
+        </InfoCard>
+
+        <InfoCard title="Websites" icon={faGlobe}>
+          <InfoLink href={external.intranet} label="King’s College Intranet" />
+          <InfoLink href={external.libraryOfThings} label="KCSU Library of Things (LofT)" />
+          <InfoLink href={external.kords} label="King’s Open Room Database (KORDs)" />
+          <InfoLink href={external.plms} label="Porters’ Lodge Management System (PLMS)" />
+          <InfoLink href={external.rms} label="Room Management System (RMS)" />
+          <InfoLink href={external.kcgu} label="King’s College Graduate Union (KCGU)" />
+          <InfoLink href={external.camcors} label="CamCORS Supervision Reports" />
+        </InfoCard>
+
+        <InfoCard title="Email Support" icon={faEnvelope}>
+          <InfoLink href={pages.exec} label="KCSU Exec" />
+          <InfoLink href={external.itSupportEmail} label="College IT Support" icon={faEnvelopeRegular} />
+          <InfoLink href={external.lookup} label="CRSid Lookup" />
+        </InfoCard>
+
+        <InfoCard title="Maintenance" icon={faScrewdriverWrench}>
+          <InfoLink href={external.maintenance} label="Report a Maintenance Issue" />
+        </InfoCard>
+
+        <InfoCard title="KCSU Forms" icon={faFileLines}>
+          <InfoLink href={external.feedbackForm} label="Continuous Feedback Form" />
+        </InfoCard>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

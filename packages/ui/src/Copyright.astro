@@ -1,0 +1,10 @@
+---
+// Copyright line as inline text. Year is filled in at build time and refreshed in the browser.
+---
+&copy; <span data-copyright-year>{new Date().getUTCFullYear()}</span> King’s College Student Union. All rights reserved.
+
+<script>
+  document.querySelectorAll('[data-copyright-year]').forEach((year) => {
+    year.textContent = String(new Date().getUTCFullYear());
+  });
+</script>

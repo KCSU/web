@@ -1,0 +1,116 @@
+---
+import Logo from '@kcsu/ui/Logo.astro';
+import { faBars, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { external, pages } from '../data/links';
+import Icon from './Icon.astro';
+import NavItem, { type NavLink } from './NavItem.astro';
+
+const navItems: { label: string; items: NavLink[] }[] = [
+  {
+    label: 'About Us',
+    items: [
+      { href: pages.exec, label: 'The Exec' },
+      { href: external.constitution, label: 'Constitution' },
+      { href: external.standingOrders, label: 'Standing Orders' },
+      { href: pages.history, label: 'History' },
+    ],
+  },
+  {
+    label: 'Events',
+    items: [
+      { href: external.eventsCalendar, label: 'Calendar' },
+    ],
+  },
+  {
+    label: 'Societies',
+    items: [
+      { href: pages.academicSocieties, label: 'Academic Societies' },
+      { href: pages.sportsSocieties, label: 'Sports Societies' },
+      { href: pages.otherSocieties, label: 'Other Societies' },
+    ],
+  },
+  {
+    label: 'Resources',
+    items: [
+      { href: external.hallBooking, label: 'Booking the Hall' },
+      { href: pages.periodVend, label: 'Period Vend Machine Restock' },
+      { href: external.supportInfoSheet, label: 'Financial & Psychological Support' },
+    ],
+  },
+  {
+    label: 'Links',
+    items: [
+      { href: external.formalBooking, label: 'Formal Booking' },
+      { href: external.intranet, label: 'College Intranet' },
+      { href: external.epos, label: 'EPOS Top-up' },
+    ],
+  },
+];
+---
+
+<nav class="shadow-md sticky top-0 z-50 bg-primary">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <a href={pages.home} class="flex items-center text-white" aria-label="KCSU home">
+        <Logo class="block h-8 w-auto" />
+      </a>
+
+      <ul class="hidden md:flex space-x-8">
+        {navItems.map((item) => <NavItem {...item} />)}
+      </ul>
+
+      <div class="md:hidden">
+        <button
+          type="button"
+          class="group/menu text-white hover:bg-black/30 inline-flex items-center justify-center p-2 rounded-md text-2xl focus-visible:outline-2 focus-visible:outline-white"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          data-mobile-menu-button
+        >
+          <span class="sr-only">Open main menu</span>
+          <span class="group-aria-expanded/menu:hidden"><Icon icon={faBars} fixedWidth /></span>
+          <span class="hidden group-aria-expanded/menu:inline"><Icon icon={faXmark} fixedWidth /></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden">
+    <div class="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
+      {navItems.map((item) => (
+        <div>
+          <button
+            type="button"
+            aria-expanded="false"
+            class="group/dropdown w-full text-left px-3 py-2 text-gray-800 rounded-md hover:bg-gray-100"
+            data-mobile-dropdown-button
+          >
+            {item.label}
+            <Icon icon={faChevronDown} class="ml-1.5 text-xs transition-transform group-aria-expanded/dropdown:rotate-180" />
+          </button>
+          <div class="hidden pl-4">
+            {item.items.map((link) => (
+              <a href={link.href} class="rounded-md block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggle = (button: HTMLElement, target: Element | null) => {
+    const hidden = target?.classList.toggle('hidden');
+    button.setAttribute('aria-expanded', String(!hidden));
+  };
+
+  const menuButton = document.querySelector<HTMLElement>('[data-mobile-menu-button]');
+  menuButton?.addEventListener('click', () => toggle(menuButton, document.getElementById('mobile-menu')));
+
+  document.querySelectorAll<HTMLElement>('[data-mobile-dropdown-button]').forEach((button) => {
+    button.addEventListener('click', () => toggle(button, button.nextElementSibling));
+  });
+</script>

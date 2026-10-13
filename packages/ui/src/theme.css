@@ -2,7 +2,8 @@
 
 @theme {
   --font-sans: 'Figtree', system-ui, sans-serif;
-  --color-logo: #59276c;
+  --color-primary: #59276c;
+  --color-logo: var(--color-primary);
   --color-bg: #fff;
   --color-fg: #1a1a1a;
   --color-muted: #6b6b6b;

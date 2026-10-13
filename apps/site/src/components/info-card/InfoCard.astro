@@ -1,0 +1,21 @@
+---
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import Icon from '../Icon.astro';
+
+interface Props {
+  title: string;
+  icon: IconDefinition;
+}
+
+const { title, icon } = Astro.props;
+---
+
+<div class="bg-white p-6 rounded-lg shadow-md">
+  <div class="flex items-center mb-4">
+    <Icon icon={icon} fixedWidth class="text-xl text-gray-700 mr-3" />
+    <h2 class="text-xl font-bold text-gray-900">{title}</h2>
+  </div>
+  <ul class="space-y-2">
+    <slot />
+  </ul>
+</div>
