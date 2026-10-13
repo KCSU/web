@@ -25,7 +25,7 @@ export interface Exec {
 
 const API_URL = 'https://admin.kcsu.org.uk/api/exec';
 
-const TIMEOUT_MS = 30 * 1000;
+const TIMEOUT_MS = 10 * 1000;
 
 const UPDATED_FORMAT = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London',

@@ -2,13 +2,12 @@ import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faArrowUp, faListUl, faTableCells, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'preact/hooks';
 
-import { fetchExec, formatUpdated, holderNames, type Exec as ExecData, type Role } from '../../lib/exec';
+import { formatUpdated, holderNames, type Exec as ExecData, type Role } from '../../lib/exec';
 import Icon from '../Icon';
 
 type View = 'card' | 'table';
 
-export default function Exec() {
-  const exec = useExec();
+export default function Exec({ exec }: { exec: ExecData }) {
   const [view, setView] = useView();
 
   return (
@@ -20,7 +19,7 @@ export default function Exec() {
         </div>
       </div>
 
-      {!exec ? <Loading /> : view === 'card' ? <Cards roles={exec.roles} /> : <Table roles={exec.roles} />}
+      {view === 'card' ? <Cards roles={exec.roles} /> : <Table roles={exec.roles} />}
 
       <div class="mt-16 pt-8 border-t border-gray-200 text-sm text-gray-500">
         <div class="flex items-center justify-between gap-4">
@@ -33,18 +32,10 @@ export default function Exec() {
             <Icon icon={faArrowUp} class="ml-1" />
           </a>
         </div>
-        {exec && <p class="mt-2">Last updated: {formatUpdated(exec.updated_at)}</p>}
+        <p class="mt-2">Last updated: {formatUpdated(exec.updated_at)}</p>
       </div>
     </>
   );
-}
-
-function useExec(): ExecData | null {
-  const [exec, setExec] = useState<ExecData | null>(null);
-  useEffect(() => {
-    fetchExec().then(setExec, (err) => console.error('loading the exec failed:', err));
-  }, []);
-  return exec;
 }
 
 function useView(): [View, (view: View) => void] {
@@ -132,7 +123,7 @@ function Card({ role }: { role: Role }) {
           {role.instagram.map((handle) => (
             <a
               key={handle}
-              href={`https://www.instagram.com/${handle}/`}
+              href={`https://www.instagram.com/${encodeURIComponent(handle)}/`}
               target="_blank"
               rel="noopener noreferrer"
               class="inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-purple-800 transition-colors"
@@ -175,27 +166,6 @@ function Table({ roles }: { roles: Role[] }) {
           ))}
         </tbody>
       </table>
-    </div>
-  );
-}
-
-/** How many placeholder cards to show while loading. */
-const LOADING_ROLES = 6;
-
-/** Placeholder with the same layout as the loaded cards. */
-function Loading() {
-  return (
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" aria-busy="true">
-      {Array.from({ length: LOADING_ROLES }, (_, i) => (
-        <div key={i} class="flex gap-8 bg-white rounded-xl shadow-md p-6 motion-safe:animate-pulse" aria-hidden="true">
-          <div class="grow space-y-3">
-            <div class="h-7 w-40 rounded-sm bg-gray-200" />
-            <div class="h-4 w-56 rounded-sm bg-gray-200" />
-            <div class="h-16 rounded-sm bg-gray-200" />
-          </div>
-          <div class="flex-none w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full bg-gray-200" />
-        </div>
-      ))}
     </div>
   );
 }

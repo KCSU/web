@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Exec from '../../components/exec/Exec';
+import { fetchExec } from '../../lib/exec';
+
+// Fetched at build time.
+const exec = await fetchExec();
 ---
 
 <BaseLayout
@@ -19,7 +23,7 @@ import Exec from '../../components/exec/Exec';
         </p>
       </header>
 
-      <Exec client:load />
+      <Exec client:load exec={exec} />
     </div>
   </div>
 </BaseLayout>

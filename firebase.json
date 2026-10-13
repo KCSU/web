@@ -8,6 +8,13 @@
       ],
       "cleanUrls": true,
       "trailingSlash": false,
+      "redirects": [
+        {
+          "source": "/about-us/team",
+          "destination": "/about-us/exec",
+          "type": 301
+        }
+      ],
       "headers": [
         {
           "source": "/_astro/**",
@@ -19,7 +26,7 @@
           ]
         },
         {
-          "source": "**/*.html",
+          "source": "**/!(*.*)",
           "headers": [
             {
               "key": "Cache-Control",
