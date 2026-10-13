@@ -5,6 +5,9 @@
   "targets": {
     "kcsu-admin": {
       "hosting": {
+        "site": [
+          "kcsu-site-next"
+        ],
         "status": [
           "kcsu-status"
         ]

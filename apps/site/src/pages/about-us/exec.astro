@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Exec from '../../components/exec/Exec';
+---
+
+<BaseLayout
+  title="The Exec"
+  description="The KCSU Executive Committee consists of officers elected to represent undergraduates at King’s College, Cambridge."
+>
+  <div class="bg-linear-to-b from-purple-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <header class="text-center max-w-3xl mb-6 mx-auto pt-6">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">Meet the Exec</h1>
+        <div class="h-1.5 w-32 bg-primary mx-auto mb-6" aria-hidden="true"></div>
+        <p class="text-lg text-gray-600">
+          The KCSU is made up of a group of King’s students who have been elected in accordance with the
+          Constitution to represent the views of the undergraduate student body. Each member of the KCSU is
+          responsible for a specific area of our work. Find out more about us below!
+        </p>
+      </header>
+
+      <Exec client:load />
+    </div>
+  </div>
+</BaseLayout>
