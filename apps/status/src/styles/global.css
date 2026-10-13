@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@kcsu/ui/theme.css";
+
+@theme {
+  --color-up: #2e9e5b;
+  --color-partial: #d9a100;
+  --color-down: #d0343a;
+  --color-nodata: #d4d4d4;
+  --color-pending: #6b6b6b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-nodata: #3a3a3a;
+    --color-pending: #4a4a4a;
+  }
+}

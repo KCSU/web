@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "kcsu-admin"
+  },
+  "targets": {
+    "kcsu-admin": {
+      "hosting": {
+        "status": [
+          "kcsu-status"
+        ]
+      }
+    }
+  }
+}

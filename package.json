@@ -1,0 +1,11 @@
+{
+  "name": "kcsu-web",
+  "private": true,
+  "description": "KCSU's websites and shared UI.",
+  "scripts": {
+    "dev:status": "pnpm --filter status dev",
+    "build": "pnpm -r build",
+    "check": "pnpm -r check"
+  },
+  "packageManager": "pnpm@12.11.2"
+}

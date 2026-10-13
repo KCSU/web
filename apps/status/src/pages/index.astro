@@ -1,0 +1,37 @@
+---
+import Logo from '@kcsu/ui/Logo.astro';
+import Uptime from '../components/Uptime';
+import '../styles/global.css';
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Status | King’s College SU</title>
+  <meta name="description" content="Live status of King’s College Student Union services.">
+  <meta name="theme-color" content="#59276c">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192x192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180x180.png">
+</head>
+<body class="flex min-h-screen flex-col bg-bg text-[16px] leading-normal text-fg">
+<header class="mx-auto flex w-full max-w-[760px] items-baseline justify-between gap-4 px-4 pt-8 sm:pt-24">
+  <a class="inline-block text-logo" href="https://www.kcsu.org.uk/"><Logo class="block h-8 w-auto sm:h-12" /></a>
+  <h1 class="text-[1.5rem] leading-none font-bold whitespace-nowrap sm:text-[2rem] sm:whitespace-normal">Service Status</h1>
+</header>
+
+<main class="mx-auto w-full max-w-[760px] flex-1 px-4 pt-5 pb-8">
+  <hr class="mb-6 border-fg">
+  <Uptime client:load />
+</main>
+
+<footer class="py-4 text-center text-[0.875rem] text-muted">
+  <div class="mx-auto w-full max-w-[760px] px-4">
+    &copy; <span id="year"></span> King’s College Student Union. All rights reserved.
+  </div>
+</footer>
+<script>document.getElementById('year')!.textContent = String(new Date().getUTCFullYear());</script>
+</body>
+</html>

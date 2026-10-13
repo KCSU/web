@@ -1,0 +1,20 @@
+@import "./fonts.css";
+
+@theme {
+  --font-sans: 'Figtree', system-ui, sans-serif;
+  --color-logo: #59276c;
+  --color-bg: #fff;
+  --color-fg: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-card: #f6f6f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-logo: #fff;
+    --color-bg: #111;
+    --color-fg: #eee;
+    --color-muted: #999;
+    --color-card: #1c1c1c;
+  }
+}
