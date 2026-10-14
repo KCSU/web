@@ -1,11 +1,12 @@
 import type { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
-import { noticeStatus } from '../lib/notices';
+import { noticeStatus, type Notice } from '../lib/notices';
 import {
   API_URL, POLL_MS, TIMEOUT_MS, formatDate, formatUpdated, historyDates, isUp,
   type Site, type Uptime as UptimeData,
 } from '../lib/uptime';
+import { DayPopover } from './DayPopover';
 import { IncidentCard } from './Incidents';
 
 export default function Uptime() {
@@ -44,7 +45,9 @@ export default function Uptime() {
         </Banner>
         {incidents.map((notice) => <IncidentCard key={notice.id} notice={notice} sites={uptime.sites} now={now} />)}
       </div>
-      {uptime.sites.map((site) => <SiteCard key={site.id} site={site} dates={dates} />)}
+      {uptime.sites.map((site) => (
+        <SiteCard key={site.id} site={site} dates={dates} notices={uptime.notices ?? []} now={now} />
+      ))}
     </>
   );
 }
@@ -125,14 +128,19 @@ function Placeholder({ width }: { width: string }) {
   return <span class={`inline-block rounded-xs bg-nodata leading-none ${width}`}>&nbsp;</span>;
 }
 
-function SiteCard({ site, dates }: { site: Site; dates: string[] }) {
+function SiteCard({ site, dates, notices, now }: {
+  site: Site;
+  dates: string[];
+  notices: Notice[];
+  now: number;
+}) {
   return (
     <section id={`site-${site.id}`} class="mt-4 rounded-lg bg-card p-4">
       <div class="flex flex-wrap justify-between gap-2">
         <a class="font-semibold hover:underline" href={site.url}>{site.name}</a>
         <SiteState site={site} />
       </div>
-      <Bars site={site} dates={dates} />
+      <Bars site={site} dates={dates} notices={notices} now={now} />
       <div class="flex justify-between gap-2 text-[0.8rem] text-muted">
         <span>
           <span class="sm:hidden">50 days ago</span>
@@ -163,22 +171,39 @@ function SiteState({ site }: { site: Site }) {
     : <span class="text-down">Down ({site.latest.error})</span>;
 }
 
-/** Color-coded uptime bars. */
-function Bars({ site, dates }: { site: Site; dates: string[] }) {
+/** Color-coded uptime bars. Hovering, focusing or tapping one shows that day's details. */
+function Bars({ site, dates, notices, now }: {
+  site: Site;
+  dates: string[];
+  notices: Notice[];
+  now: number;
+}) {
+  const [open, setOpen] = useState<{ date: string; x: number } | null>(null);
+  const show = (date: string) => (event: Event) => {
+    const bar = event.currentTarget as HTMLElement;
+    setOpen({ date, x: bar.offsetLeft + bar.offsetWidth / 2 });
+  };
+  const hide = () => setOpen(null);
   return (
-    <div class="mt-3 mb-1 flex h-8 gap-0.5 [&>span:nth-last-child(n+51)]:hidden sm:[&>span:nth-last-child(n+51)]:block">
-      {dates.map((date) => {
-        const day = site.days[date];
-        if (!day?.total) {
-          return <span key={date} class="flex-1 rounded-xs bg-nodata" title={`${formatDate(date)}: no data`} />;
-        }
-        const ratio = day.up / day.total;
-        const colour = ratio >= 0.99 ? 'bg-up' : ratio >= 0.9 ? 'bg-partial' : 'bg-down';
-        return (
-          <span key={date} class={`flex-1 rounded-xs ${colour}`}
-            title={`${formatDate(date)}: ${(ratio * 100).toFixed(1)}% up`} />
-        );
-      })}
+    <div class="relative" onMouseLeave={hide}>
+      <div class="mt-3 mb-1 flex h-8 gap-0.5 [&>span:nth-last-child(n+51)]:hidden sm:[&>span:nth-last-child(n+51)]:block">
+        {dates.map((date) => {
+          const day = site.days[date];
+          const ratio = day?.total ? day.up / day.total : null;
+          const colour = ratio === null ? 'bg-nodata'
+            : ratio >= 0.99 ? 'bg-up' : ratio >= 0.9 ? 'bg-partial' : 'bg-down';
+          const label = ratio === null ? `${formatDate(date)}: no data`
+            : `${formatDate(date)}: ${(ratio * 100).toFixed(1)}% up`;
+          return (
+            <span key={date} tabIndex={0} aria-label={label}
+              class={`flex-1 rounded-xs ${colour} outline-offset-2 hover:opacity-75 ${open?.date === date ? 'opacity-75' : ''}`}
+              onMouseEnter={show(date)} onFocus={show(date)} onClick={show(date)} onBlur={hide} />
+          );
+        })}
+      </div>
+      {open && (
+        <DayPopover site={site} date={open.date} notices={notices} now={now} x={open.x} />
+      )}
     </div>
   );
 }

@@ -72,6 +72,16 @@ export function formatUpdated(unix: number): string {
   return !offset || /^GMT([+-]0)?$/.test(offset) ? text : `${text} (${offset})`;
 }
 
+/** Duration as "2 hrs 42 mins", "1 hr" or "5 mins". */
+export function formatDuration(minutes: number): string {
+  const hrs = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  const parts = [];
+  if (hrs) parts.push(`${hrs} ${hrs === 1 ? 'hr' : 'hrs'}`);
+  if (mins || !hrs) parts.push(`${mins} ${mins === 1 ? 'min' : 'mins'}`);
+  return parts.join(' ');
+}
+
 /** Whether the site's latest check passed. */
 export function isUp(site: Site): boolean {
   return site.latest !== null && site.latest.error === null;

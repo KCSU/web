@@ -31,6 +31,13 @@ export function noticeStatus(notice: Notice, now: number): NoticeStatus {
   return 'active';
 }
 
+/** Whether the notice overlaps the half-open interval [`from`, `to`) (Unix seconds). */
+export function overlaps(notice: Notice, from: number, to: number, now: number): boolean {
+  const start = notice.starts_at ?? notice.updates[0]?.at ?? now;
+  const end = notice.ends_at ?? now;
+  return start < to && end >= from;
+}
+
 const DAY_FORMAT = new Intl.DateTimeFormat('en-GB', {
   weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/London',
 });
