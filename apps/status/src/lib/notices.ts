@@ -13,10 +13,22 @@ export interface Notice {
   kind: NoticeKind;
   title: string;
   body: string | null;
-  /** The sites it affects. Empty means all of them. */
+  /** The sites it affects. Can be empty. */
   site_ids: string[];
+  /** Unix seconds. Hidden until then. `null` if it has no set start. */
+  starts_at?: number | null;
+  /** Unix seconds. Hidden from then on. `null` if it has no set end. */
+  ends_at?: number | null;
   /** Oldest first. */
   updates: NoticeUpdate[];
+}
+
+export type NoticeStatus = 'upcoming' | 'active' | 'ended';
+
+export function noticeStatus(notice: Notice, now: number): NoticeStatus {
+  if (notice.ends_at != null && now >= notice.ends_at) return 'ended';
+  if (notice.starts_at != null && now < notice.starts_at) return 'upcoming';
+  return 'active';
 }
 
 const DAY_FORMAT = new Intl.DateTimeFormat('en-GB', {

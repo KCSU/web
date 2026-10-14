@@ -1,6 +1,7 @@
 import type { ComponentChildren } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
+import { noticeStatus } from '../lib/notices';
 import {
   API_URL, POLL_MS, TIMEOUT_MS, formatDate, formatUpdated, historyDates, isUp,
   type Site, type Uptime as UptimeData,
@@ -23,7 +24,8 @@ export default function Uptime() {
 
   const dates = historyDates(new Date());
   const now = Date.now() / 1000;
-  const incidents = (uptime.notices ?? []).filter((notice) => notice.kind === 'incident');
+  const incidents = (uptime.notices ?? [])
+    .filter((notice) => notice.kind === 'incident' && noticeStatus(notice, now) === 'active');
   const hasIncidents = incidents.length > 0;
   const allUp = uptime.sites.every((site) => !site.latest || isUp(site));
   // An open incident turns the banner red nonetheless.
