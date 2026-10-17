@@ -53,7 +53,7 @@ export default function Uptime() {
 }
 
 /**
- * Fetches /api/uptime now, then every minute while the tab is visible.
+ * Fetches /uptime now, then every minute while the tab is visible.
  * `'failed'` only if nothing has loaded yet.
  */
 function usePolledUptime(): UptimeData | 'failed' | null {

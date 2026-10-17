@@ -1,4 +1,4 @@
-// Fetch the current exec from the admin API's /api/exec.
+// Fetch the current exec from the public API's /exec.
 
 export interface Holder {
   name: string;
@@ -23,7 +23,7 @@ export interface Exec {
   roles: Role[];
 }
 
-const API_URL = 'https://admin.kcsu.org.uk/api/exec';
+const API_URL = 'https://api.kcsu.org.uk/exec';
 
 const TIMEOUT_MS = 10 * 1000;
 

@@ -1,4 +1,4 @@
-// Notices from /api/uptime: planned maintenance, incidents and general information.
+// Notices from /uptime: planned maintenance, incidents and general information.
 
 export type NoticeKind = 'maintenance' | 'incident' | 'info';
 

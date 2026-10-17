@@ -1,8 +1,8 @@
-// Fetch and process data returned by admin API's /api/uptime.
+// Fetch and process data returned by the public API's /uptime.
 
 import type { Notice } from './notices';
 
-/** A health check returned by /api/uptime. */
+/** A health check returned by /uptime. */
 export interface Check {
   /** Unix seconds. */
   checked_at: number;
@@ -33,7 +33,7 @@ export interface Uptime {
   notices?: Notice[];
 }
 
-export const API_URL = 'https://admin.kcsu.org.uk/api/uptime';
+export const API_URL = 'https://api.kcsu.org.uk/uptime';
 
 export const POLL_MS = 60 * 1000;
 export const TIMEOUT_MS = 30 * 1000;
