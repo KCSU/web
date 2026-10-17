@@ -1,7 +1,7 @@
 import { overlaps, type Notice } from '../lib/notices';
 import { formatDate, formatDuration, type Site } from '../lib/uptime';
 
-const MINUTES_PER_CHECK = 1;
+const MINUTES_PER_CHECK = 10;
 const DAY_SECONDS = 24 * 60 * 60;
 const WIDTH = '16rem';
 
