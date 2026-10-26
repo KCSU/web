@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @import "@kcsu/ui/theme.css";
+
+/* Content width and side margins */
+@utility page-width {
+  max-width: var(--container-7xl);
+  margin-inline: auto;
+  padding-inline: --spacing(4);
+  @variant sm { padding-inline: --spacing(6); }
+  @variant lg { padding-inline: --spacing(8); }
+}

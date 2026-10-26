@@ -11,7 +11,6 @@
   "dependencies": {
     "@astrojs/preact": "^6.0.6",
     "@astrojs/sitemap": "^3.7.4",
-    "@fortawesome/fontawesome-common-types": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",

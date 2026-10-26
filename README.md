@@ -15,14 +15,14 @@ Uses Node 24 (see `.node-version`) and pnpm through Corepack:
 corepack enable pnpm
 pnpm install
 
-pnpm dev:status
-pnpm build
+pnpm dev:site     # or dev:status
 pnpm check
+pnpm build
 ```
 
 ## Deploying
 
 ```sh
 pnpm build
-npx firebase-tools deploy --only hosting:status
+npx firebase-tools deploy --only hosting:site    # or hosting:status
 ```

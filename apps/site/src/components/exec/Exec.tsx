@@ -1,39 +1,28 @@
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { faArrowUp, faListUl, faTableCells, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { faTable, faTableCellsLarge, type IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { Fragment } from 'preact';
 import { useEffect, useState } from 'preact/hooks';
 
-import { formatUpdated, holderNames, type Exec as ExecData, type Role } from '../../lib/exec';
+import { holderNames, type Role } from '../../lib/exec';
+import { setUrlParam } from '../../lib/url';
 import Icon from '../Icon';
+import Link from '../Link';
 
 type View = 'card' | 'table';
 
-export default function Exec({ exec }: { exec: ExecData }) {
+export default function Exec({ roles }: { roles: Role[] }) {
   const [view, setView] = useView();
 
   return (
     <>
       <div class="flex justify-end mb-6">
         <div class="inline-flex items-center bg-gray-100 rounded-lg p-1 shadow-xs">
-          <ViewButton view="card" current={view} onSelect={setView} icon={faTableCells} label="Cards" />
-          <ViewButton view="table" current={view} onSelect={setView} icon={faListUl} label="Table" />
+          <ViewButton view="card" current={view} onSelect={setView} icon={faTableCellsLarge} label="Cards" />
+          <ViewButton view="table" current={view} onSelect={setView} icon={faTable} label="Table" />
         </div>
       </div>
 
-      {view === 'card' ? <Cards roles={exec.roles} /> : <Table roles={exec.roles} />}
-
-      <div class="mt-16 pt-8 border-t border-gray-200 text-sm text-gray-500">
-        <div class="flex items-center justify-between gap-4">
-          <p>
-            This page is subject to change. For any queries, please contact{' '}
-            <a href="mailto:president@kcsu.org.uk" class="text-purple-700 hover:text-purple-900">the KCSU President</a>.
-          </p>
-          <a href="#" class="inline-flex flex-none items-center text-purple-600 hover:text-purple-800">
-            Back to top
-            <Icon icon={faArrowUp} class="ml-1" />
-          </a>
-        </div>
-        <p class="mt-2">Last updated: {formatUpdated(exec.updated_at)}</p>
-      </div>
+      {view === 'card' ? <Cards roles={roles} /> : <Table roles={roles} />}
     </>
   );
 }
@@ -46,9 +35,7 @@ function useView(): [View, (view: View) => void] {
 
   const select = (next: View) => {
     setView(next);
-    const url = new URL(window.location.href);
-    url.searchParams.set('view', next);
-    window.history.replaceState(null, '', url);
+    setUrlParam('view', next);
   };
   return [view, select];
 }
@@ -89,22 +76,17 @@ function Cards({ roles }: { roles: Role[] }) {
 function Card({ role }: { role: Role }) {
   const names = holderNames(role);
   return (
-    <article class="bg-white text-gray-900 rounded-xl shadow-md p-6 transition-shadow duration-300 hover:shadow-xl">
+    <article class="bg-white text-gray-900 rounded-xl border border-gray-300 p-6">
       <div class="flex gap-4 md:gap-8">
         <div class="grow min-w-0">
           <h2 class="text-2xl/7 font-bold">{role.title}</h2>
           {names && <p class={`text-lg/5 font-bold mt-1 ${role.photo_url ? 'md:hidden' : ''}`}>{names}</p>}
-          <p class="text-gray-600 italic mt-1 mb-3 text-sm">
-            {role.emails.map((email, i) => (
-              <span key={email} class="inline-block">
-                <a href={`mailto:${email}`} class="hover:text-purple-800">{email}</a>
-                {i < role.emails.length - 1 && ', '}
-              </span>
-            ))}
+          <p class="mt-1 mb-3 text-sm">
+            <Emails emails={role.emails} />
           </p>
           {role.holders.length === 0
             ? <p class="text-sm italic text-gray-500">This position is currently vacant.</p>
-            : role.bio && <p class="text-sm whitespace-pre-line">{role.bio}</p>}
+            : role.bio && <p class="text-base/6 whitespace-pre-line">{role.bio}</p>}
         </div>
         {role.photo_url && (
           <figure class="flex-none text-center w-24 md:w-28 lg:w-32 mt-1">
@@ -119,48 +101,56 @@ function Card({ role }: { role: Role }) {
         )}
       </div>
       {role.instagram.length > 0 && (
-        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-4">
+        <ul class="flex flex-wrap gap-x-4 mt-4 text-sm">
           {role.instagram.map((handle) => (
-            <a
-              key={handle}
-              href={`https://www.instagram.com/${encodeURIComponent(handle)}/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-gray-600 hover:text-purple-800 transition-colors"
-            >
-              <Icon icon={faInstagram} class="text-base" />
-              <span>@{handle}</span>
-            </a>
+            <li key={handle} class="flex items-center gap-1.5">
+              <Icon icon={faInstagram} class="flex-none text-base text-gray-500" />
+              <Link href={`https://www.instagram.com/${encodeURIComponent(handle)}/`} class="leading-6">@{handle}</Link>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </article>
   );
 }
 
+function Emails({ emails }: { emails: string[] }) {
+  return (
+    <>
+      {emails.map((email, i) => (
+        <Fragment key={email}>
+          {i > 0 && ' '}
+          <span class="inline-block">
+            <Link href={`mailto:${email}`}>{email}</Link>
+            {i < emails.length - 1 && ','}
+          </span>
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+/** Rows stack on phones. */
 function Table({ roles }: { roles: Role[] }) {
   return (
-    <div class="overflow-x-auto rounded-lg">
-      <table class="min-w-full bg-white border border-gray-200">
-        <thead>
-          <tr class="bg-gray-300 text-gray-900 uppercase leading-normal">
-            <th class="py-3 px-6 text-left">Name</th>
-            <th class="py-3 px-6 text-left">Role</th>
-            <th class="py-3 px-6 text-left">Email</th>
+    <div class="rounded-xl border border-gray-300 overflow-hidden bg-white">
+      <table class="w-full text-gray-900">
+        <thead class="max-sm:sr-only">
+          <tr class="bg-gray-50 border-b border-gray-300 text-sm">
+            <th class="py-3 px-6 text-left font-semibold">Name</th>
+            <th class="py-3 px-6 text-left font-semibold">Role</th>
+            <th class="py-3 px-6 text-left font-semibold">Email</th>
           </tr>
         </thead>
-        <tbody class="text-gray-800 font-light">
+        <tbody>
           {roles.map((role) => (
-            <tr key={role.id} class="border-b border-gray-200 hover:bg-gray-200 odd:bg-gray-100">
-              <td class="py-3 px-6">{holderNames(role) || <em class="text-gray-500">Vacant</em>}</td>
-              <td class="py-3 px-6">{role.title}</td>
-              <td class="py-3 px-6">
-                {role.emails.map((email, i) => (
-                  <span key={email}>
-                    <a href={`mailto:${email}`} class="text-purple-700 hover:text-purple-900">{email}</a>
-                    {i < role.emails.length - 1 && ', '}
-                  </span>
-                ))}
+            <tr key={role.id} class="border-b border-gray-200 last:border-b-0 max-sm:block max-sm:px-4 max-sm:py-3">
+              <td class="py-3 px-6 max-sm:block max-sm:p-0 max-sm:font-semibold">
+                {holderNames(role) || <em class="text-gray-500 font-normal">Vacant</em>}
+              </td>
+              <td class="py-3 px-6 max-sm:block max-sm:p-0 max-sm:text-sm max-sm:text-gray-600">{role.title}</td>
+              <td class="py-3 px-6 max-sm:block max-sm:p-0 max-sm:mt-1 max-sm:text-sm">
+                <Emails emails={role.emails} />
               </td>
             </tr>
           ))}

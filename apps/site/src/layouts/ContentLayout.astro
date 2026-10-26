@@ -1,0 +1,46 @@
+---
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../components/Icon';
+import Link from '../components/Link';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  /** Unix seconds. */
+  updatedAt: number;
+}
+
+const { title, description, heading, updatedAt } = Astro.props;
+
+// As "13 October 2026", in UK time.
+const updated = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London',
+}).format(new Date(updatedAt * 1000));
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="bg-slate-50">
+    <div class="page-width py-16">
+      <header class="text-center max-w-3xl mb-10 mx-auto pt-6">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">{heading}</h1>
+        <div class="h-1.5 w-32 bg-primary mx-auto mb-6" aria-hidden="true"></div>
+        <p class="text-lg text-gray-600"><slot name="intro" /></p>
+      </header>
+
+      <slot />
+
+      <div class="mt-16 pt-8 border-t border-gray-200 text-sm text-gray-500">
+        <div class="flex items-center justify-between gap-4">
+          <p><slot name="note" /></p>
+          <Link href="#" class="inline-flex flex-none items-center min-h-6">
+            Back to top
+            <Icon icon={faArrowUp} class="ml-1" />
+          </Link>
+        </div>
+        <p class="mt-2">Last updated: {updated}</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

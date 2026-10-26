@@ -1,5 +1,3 @@
-// Notices from /uptime: planned maintenance, incidents and general information.
-
 export type NoticeKind = 'maintenance' | 'incident' | 'info';
 
 export interface NoticeUpdate {
@@ -23,7 +21,7 @@ export interface Notice {
   updates: NoticeUpdate[];
 }
 
-export type NoticeStatus = 'upcoming' | 'active' | 'ended';
+type NoticeStatus = 'upcoming' | 'active' | 'ended';
 
 export function noticeStatus(notice: Notice, now: number): NoticeStatus {
   if (notice.ends_at != null && now >= notice.ends_at) return 'ended';
@@ -49,8 +47,7 @@ const at = (unix: number) => new Date(unix * 1000);
 const day = (unix: number) => DAY_FORMAT.format(at(unix));
 const time = (unix: number) => TIME_FORMAT.format(at(unix));
 
-/** Unix seconds as "14:12" if it's on the same UK day as `now`, else "Sat 18 Oct, 14:12",
- *  for a list of updates. */
+/** "14:12" if on the same UK day as `now`, else "Sat 18 Oct, 14:12". */
 export function formatUpdateTime(unix: number, now: number): string {
   return day(unix) === day(now) ? time(unix) : `${day(unix)}, ${time(unix)}`;
 }

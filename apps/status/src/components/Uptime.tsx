@@ -52,10 +52,7 @@ export default function Uptime() {
   );
 }
 
-/**
- * Fetches /uptime now, then every minute while the tab is visible.
- * `'failed'` only if nothing has loaded yet.
- */
+/** Polls /uptime while the tab is visible. `'failed'` only if nothing has loaded yet. */
 function usePolledUptime(): UptimeData | 'failed' | null {
   const [uptime, setUptime] = useState<UptimeData | null>(null);
   const [failed, setFailed] = useState(false);
@@ -79,7 +76,7 @@ function usePolledUptime(): UptimeData | 'failed' | null {
 
     refresh();
     const timer = setInterval(refresh, POLL_MS);
-    // Hidden tabs don't poll, and catch up as soon as they're shown.
+    // Catch up when the tab is shown again.
     document.addEventListener('visibilitychange', refresh);
     return () => {
       clearInterval(timer);

@@ -1,4 +1,4 @@
-// Fetch the current exec from the public API's /exec.
+import { fetchApi } from './api';
 
 export interface Holder {
   name: string;
@@ -16,30 +16,15 @@ export interface Role {
   instagram: string[];
 }
 
-export interface Exec {
+interface Exec {
   /** Unix seconds. */
   updated_at: number;
   /** In display order. */
   roles: Role[];
 }
 
-const API_URL = 'https://api.kcsu.org.uk/exec';
-
-const TIMEOUT_MS = 10 * 1000;
-
-const UPDATED_FORMAT = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/London',
-});
-
-export async function fetchExec(): Promise<Exec> {
-  const response = await fetch(API_URL, { signal: AbortSignal.timeout(TIMEOUT_MS) });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json() as Promise<Exec>;
-}
-
-/** Unix seconds as "13 October 2026", in UK time. */
-export function formatUpdated(unix: number): string {
-  return UPDATED_FORMAT.format(new Date(unix * 1000));
+export function fetchExec(): Promise<Exec> {
+  return fetchApi<Exec>('/exec');
 }
 
 export function holderNames(role: Role): string {

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pages } from '../data/links';
+---
+
+<BaseLayout title="Page Not Found" description="This page doesn’t exist. Find your way back to the KCSU website." noindex>
+  <div class="bg-slate-50 min-h-[70vh] flex items-center justify-center">
+    <div class="max-w-2xl px-4 py-20 text-center">
+      <p class="text-8xl sm:text-9xl font-bold tracking-tight text-primary leading-none" aria-hidden="true">404</p>
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mt-4 mb-4">We couldn’t find that page</h1>
+      <p class="text-lg md:text-xl text-gray-600 mb-10">It may have moved, or it no longer exists.</p>
+
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href={pages.home} class="px-5 py-2 rounded-lg border-2 border-primary bg-primary text-white font-medium hover:bg-purple-900 hover:border-purple-900">
+          Home
+        </a>
+        <button
+          type="button"
+          hidden
+          data-back
+          class="px-5 py-2 rounded-lg border-2 border-primary bg-white text-primary font-medium hover:bg-purple-50"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // Only from pages on this site: from anywhere else, back would leave it.
+  const back = document.querySelector<HTMLButtonElement>('[data-back]');
+  const referrer = document.referrer ? new URL(document.referrer) : null;
+  if (back && referrer?.origin === window.location.origin) {
+    back.hidden = false;
+    back.addEventListener('click', () => window.history.back());
+  }
+</script>

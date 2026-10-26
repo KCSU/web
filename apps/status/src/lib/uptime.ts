@@ -1,5 +1,3 @@
-// Fetch and process data returned by the public API's /uptime.
-
 import type { Notice } from './notices';
 
 /** A health check returned by /uptime. */
@@ -35,7 +33,7 @@ export interface Uptime {
 
 export const API_URL = 'https://api.kcsu.org.uk/uptime';
 
-export const POLL_MS = 60 * 1000;
+export const POLL_MS = 5 * 60 * 1000;
 export const TIMEOUT_MS = 30 * 1000;
 const HISTORY_DAYS = 90;
 const DAY_MS = 24 * 60 * 60 * 1000;

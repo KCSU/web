@@ -24,6 +24,7 @@ const sections: FooterSection[] = [
   {
     title: 'Societies',
     links: [
+      { label: 'All Societies', href: pages.societies },
       { label: 'Academic Societies', href: pages.academicSocieties },
       { label: 'Sports Societies', href: pages.sportsSocieties },
       { label: 'Other Societies', href: pages.otherSocieties },
@@ -43,7 +44,7 @@ const bottomLinkClass = 'text-gray-400 hover:text-white transition-colors durati
 
 <footer class="text-white">
   <div class="bg-neutral-800 w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="page-width py-12">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 class="text-lg font-semibold mb-2">Address</h3>
@@ -71,7 +72,7 @@ const bottomLinkClass = 'text-gray-400 hover:text-white transition-colors durati
   </div>
 
   <div class="bg-neutral-900 w-full">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="page-width py-4">
       <div class="text-center flex flex-wrap justify-center items-center gap-3">
         <p class="text-gray-400"><Copyright /></p>
         <div class="h-4 border-l border-gray-600" aria-hidden="true"></div>

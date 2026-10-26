@@ -31,7 +31,6 @@ export function DayPopover({ site, date, notices, now, x }: {
           </>
         )}
       </div>
-      {/* The pointer: a rotated square over the popover's top border. */}
       <span aria-hidden="true" style={{ left: `${x}px` }}
         class="absolute top-full z-10 mt-0.5 size-3 -translate-x-1/2 rotate-45 border-t border-l border-nodata bg-bg" />
     </>

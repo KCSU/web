@@ -9,9 +9,6 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   compressHTML: true,
-  redirects: {
-    '/about-us/team': { status: 301, destination: '/about-us/exec' },
-  },
   integrations: [preact(), sitemap()],
   vite: {
     plugins: [tailwindcss()],

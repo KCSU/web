@@ -6,7 +6,6 @@
   "exports": {
     "./Copyright.astro": "./src/Copyright.astro",
     "./Logo.astro": "./src/Logo.astro",
-    "./fonts.css": "./src/fonts.css",
     "./theme.css": "./src/theme.css"
   },
   "peerDependencies": {

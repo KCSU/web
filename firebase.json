@@ -13,6 +13,31 @@
           "source": "/about-us/team",
           "destination": "/about-us/exec",
           "type": 301
+        },
+        {
+          "source": "/societies/academic",
+          "destination": "/societies?category=academic",
+          "type": 301
+        },
+        {
+          "source": "/societies/sports",
+          "destination": "/societies?category=sports",
+          "type": 301
+        },
+        {
+          "source": "/societies/others",
+          "destination": "/societies?category=other",
+          "type": 301
+        },
+        {
+          "source": "/about-us/history",
+          "destination": "/about-us/exec",
+          "type": 301
+        },
+        {
+          "source": "/documents/college_map.pdf",
+          "destination": "/documents/college-map.pdf",
+          "type": 301
         }
       ],
       "headers": [

@@ -2,64 +2,56 @@
 import Logo from '@kcsu/ui/Logo.astro';
 import { faBars, faChevronDown, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { external, pages } from '../data/links';
-import Icon from './Icon.astro';
-import NavItem, { type NavLink } from './NavItem.astro';
+import Icon from './Icon';
+import NavItem, { type NavEntry } from './NavItem.astro';
 
-const navItems: { label: string; items: NavLink[] }[] = [
+const navItems: NavEntry[] = [
   {
     label: 'About Us',
     items: [
       { href: pages.exec, label: 'The Exec' },
       { href: external.constitution, label: 'Constitution' },
       { href: external.standingOrders, label: 'Standing Orders' },
-      { href: pages.history, label: 'History' },
+      { href: external.feedbackForm, label: 'Feedback Form' },
     ],
   },
-  {
-    label: 'Events',
-    items: [
-      { href: external.eventsCalendar, label: 'Calendar' },
-    ],
-  },
-  {
-    label: 'Societies',
-    items: [
-      { href: pages.academicSocieties, label: 'Academic Societies' },
-      { href: pages.sportsSocieties, label: 'Sports Societies' },
-      { href: pages.otherSocieties, label: 'Other Societies' },
-    ],
-  },
+  { label: 'Calendar', href: external.eventsCalendar },
+  { label: 'Societies', href: pages.societies },
   {
     label: 'Resources',
     items: [
+      { href: external.intranet, label: 'College Intranet' },
+      { href: external.epos, label: 'EPOS Top-up' },
+      { href: external.maintenance, label: 'Report a Maintenance Issue' },
       { href: external.hallBooking, label: 'Booking the Hall' },
-      { href: pages.periodVend, label: 'Period Vend Machine Restock' },
+      { href: pages.collegeMap, label: 'College Map' },
       { href: external.supportInfoSheet, label: 'Financial & Psychological Support' },
     ],
   },
   {
-    label: 'Links',
+    label: 'KCSU Websites',
     items: [
-      { href: external.formalBooking, label: 'Formal Booking' },
-      { href: external.intranet, label: 'College Intranet' },
-      { href: external.epos, label: 'EPOS Top-up' },
+      { href: external.formalBooking, label: 'Formal Booking (KiFoMaSy)' },
+      { href: external.libraryOfThings, label: 'Library of Things' },
+      { href: external.kords, label: 'Accommodation View (KORDs)' },
+      { href: external.status, label: 'Service Status' },
     ],
   },
 ];
 ---
 
 <nav class="shadow-md sticky top-0 z-50 bg-primary">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="page-width">
     <div class="flex justify-between items-center h-16">
       <a href={pages.home} class="flex items-center text-white" aria-label="KCSU home">
         <Logo class="block h-8 w-auto" />
       </a>
 
-      <ul class="hidden md:flex space-x-8">
-        {navItems.map((item) => <NavItem {...item} />)}
+      <ul class="hidden lg:flex space-x-8">
+        {navItems.map((item, index) => <NavItem {...item} alignEnd={index === navItems.length - 1} />)}
       </ul>
 
-      <div class="md:hidden">
+      <div class="lg:hidden">
         <button
           type="button"
           class="group/menu text-white hover:bg-black/30 inline-flex items-center justify-center p-2 rounded-md text-2xl focus-visible:outline-2 focus-visible:outline-white"
@@ -75,9 +67,11 @@ const navItems: { label: string; items: NavLink[] }[] = [
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden md:hidden">
+  <div id="mobile-menu" class="hidden lg:hidden">
     <div class="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
-      {navItems.map((item) => (
+      {navItems.map((item) => 'href' in item ? (
+        <a href={item.href} class="block px-3 py-2 text-gray-800 rounded-md hover:bg-gray-100">{item.label}</a>
+      ) : (
         <div>
           <button
             type="button"

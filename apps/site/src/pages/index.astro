@@ -42,8 +42,8 @@ const heroImages = [
   />
 
   <section class="py-16 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="bg-white p-6 rounded-md shadow-md mb-8 border-l-[6px] border-primary">
+    <div class="page-width">
+      <div class="bg-white p-6 rounded-xl mb-8 border border-gray-300 border-l-[6px] border-l-primary">
         <p class="text-gray-900">
           Welcome to the KCSU website! We are the student-elected
           representatives for the undergraduate students here at King’s. This
@@ -52,8 +52,7 @@ const heroImages = [
         </p>
       </div>
 
-      {/* Cards flow down each column in turn; the browser balances the column heights. */}
-      <div class="columns-1 md:columns-3 gap-8 *:not-last:mb-8 *:break-inside-avoid">
+      <div class="columns-1 md:columns-2 lg:columns-3 gap-8 *:not-last:mb-8 *:break-inside-avoid">
         <InfoCard title="Food and Menus" icon={faUtensils}>
           <InfoLink href={external.formalBooking} label="Formal Booking (KiFoMaSy)" />
           <InfoLink href={external.epos} label="EPOS Top-up" />

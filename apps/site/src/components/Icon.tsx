@@ -1,5 +1,4 @@
-// A Font Awesome icon as an SVG, for Preact components.
-import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import type { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   icon: IconDefinition;

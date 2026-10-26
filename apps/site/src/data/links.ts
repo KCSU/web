@@ -1,11 +1,10 @@
 export const pages = {
   home: '/',
   exec: '/about-us/exec',
-  history: '/about-us/history',
-  academicSocieties: '/societies/academic',
-  sportsSocieties: '/societies/sports',
-  otherSocieties: '/societies/others',
-  periodVend: '/resources/period-vend',
+  societies: '/societies',
+  academicSocieties: '/societies?category=academic',
+  sportsSocieties: '/societies?category=sports',
+  otherSocieties: '/societies?category=other',
   collegeMap: '/documents/college-map.pdf',
 } as const;
 
@@ -23,6 +22,7 @@ export const external = {
   formalBooking: 'https://store.kcsu.org.uk',
   libraryOfThings: 'https://library.kcsu.org.uk',
   kords: 'https://kords.kcsu.org.uk',
+  status: 'https://status.kcsu.org.uk',
   facebook: 'https://www.facebook.com/KingsCollegeStudentUnion',
   instagram: 'https://www.instagram.com/KCSUCambridge/',
 

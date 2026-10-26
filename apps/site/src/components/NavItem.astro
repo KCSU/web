@@ -1,44 +1,51 @@
 ---
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import Icon from './Icon.astro';
+import Icon from './Icon';
 
 export interface NavLink {
   href: string;
   label: string;
 }
 
-interface Props {
-  label: string;
-  items: NavLink[];
-}
+export type NavEntry = { label: string; items: NavLink[] } | NavLink;
 
-const { label, items } = Astro.props;
+type Props = NavEntry & {
+  alignEnd?: boolean;
+};
+
+const { alignEnd = false, ...entry } = Astro.props;
+const { label } = entry;
 const menuId = `nav-menu-${label.toLowerCase().replace(/\W+/g, '-')}`;
+const topClass = 'text-white px-3 py-2 rounded-md text-lg font-normal hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white transition-colors inline-flex items-center';
 ---
 
+{'href' in entry ? (
+<li>
+  <a href={entry.href} class={topClass}>{label}</a>
+</li>
+) : (
 <li class="relative group" data-nav-dropdown>
-  <button
-    type="button"
-    class="text-white px-3 py-2 rounded-md text-lg font-normal hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-white transition-colors inline-flex items-center"
-    aria-expanded="false"
-    aria-controls={menuId}
-  >
+  <button type="button" class={topClass} aria-expanded="false" aria-controls={menuId}>
     {label}
     <Icon icon={faChevronDown} class="ml-1.5 text-xs" />
   </button>
   <div
     id={menuId}
-    class="absolute left-1/2 -translate-x-1/2 top-full pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-data-open:opacity-100 group-data-open:visible transition-all duration-200 ease-in-out"
+    class:list={[
+      'absolute top-full pt-2 w-max min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-data-open:opacity-100 group-data-open:visible transition-all duration-200 ease-in-out',
+      alignEnd ? 'right-0' : 'left-1/2 -translate-x-1/2',
+    ]}
   >
     <div class="py-1 rounded-md shadow-lg border border-gray-200/20 bg-primary">
-      {items.map((item) => (
-        <a href={item.href} class="block px-4 py-2 text-sm text-white hover:bg-white/10 focus-visible:bg-white/10 focus-visible:outline-none">
+      {entry.items.map((item) => (
+        <a href={item.href} class="block px-4 py-2 text-base text-white hover:bg-white/10 focus-visible:bg-white/10 focus-visible:outline-none">
           {item.label}
         </a>
       ))}
     </div>
   </div>
 </li>
+)}
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-nav-dropdown]').forEach((item) => {
