@@ -1,0 +1,70 @@
+---
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Icon from '../../components/Icon';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LINK } from '../../lib/styles';
+
+// QR codes on the machines link here with ?location=<value>.
+const locations = [
+  { value: 'keynes-cub', label: 'Keynes Cubicles' },
+  { value: 'keynes-uri', label: 'Keynes + Urinals' },
+  { value: 'garden-hostel', label: 'Garden Hostels' },
+  { value: 'library', label: 'Library' },
+  { value: 'other', label: 'Other' },
+];
+---
+
+<BaseLayout
+  title="Period Vending Machine Restock Request"
+  description="Request a restock of the free period product vending machines around King's."
+>
+  <div class="bg-slate-50 min-h-[70vh]">
+    <div class="page-width py-16">
+      <header class="text-center max-w-3xl mb-10 mx-auto pt-6">
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">Period Vend Restock Request</h1>
+        <div class="h-1.5 w-32 bg-primary mx-auto" aria-hidden="true"></div>
+      </header>
+
+      <form
+        action="https://public.herotofu.com/v1/a7d26bd0-2744-11f0-ab37-9d304c3aa51c"
+        method="post"
+        accept-charset="UTF-8"
+        class="flex flex-col gap-4 max-w-md mx-auto"
+      >
+        <label for="location-select" class="sr-only">Machine location</label>
+        <div class="relative">
+          <select
+            name="location"
+            id="location-select"
+            class="w-full appearance-none cursor-pointer rounded-lg border-2 border-primary bg-white p-2 px-8 text-center text-lg shadow-md focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+          >
+            {locations.map(({ value, label }) => <option value={value} selected={value === 'other'}>{label}</option>)}
+          </select>
+          <Icon icon={faChevronDown} class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-primary" />
+        </div>
+
+        <button
+          type="submit"
+          class="cursor-pointer rounded-lg bg-primary p-3 text-lg font-bold text-white shadow-md hover:bg-purple-900"
+        >
+          Send Request
+        </button>
+
+        <!-- Honeypot for bots -->
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="sr-only" aria-hidden="true" />
+      </form>
+
+      <p class="text-center text-gray-600 mt-6">
+        You can also email <a href="mailto:genderequality@kcsu.org.uk" class={LINK}>genderequality<wbr />@kcsu.org.uk</a>.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const select = document.querySelector<HTMLSelectElement>('#location-select');
+  const location = new URLSearchParams(window.location.search).get('location');
+  if (select && location && [...select.options].some((o) => o.value === location)) {
+    select.value = location;
+  }
+</script>

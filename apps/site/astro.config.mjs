@@ -9,7 +9,7 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   compressHTML: true,
-  integrations: [preact(), sitemap()],
+  integrations: [preact(), sitemap({ filter: (page) => !page.includes('/resources/period-vend-ty') })],
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pages } from '../../data/links';
+import { LINK } from '../../lib/styles';
+// HeroTofu redirects here after a restock request.
+---
+
+<BaseLayout
+  title="Request Sent"
+  description="Your period product restock request has been sent to the KCSU Gender Equalities Officer."
+  noindex
+>
+  <div class="bg-slate-50 min-h-[70vh] flex items-center justify-center">
+    <div class="max-w-2xl px-4 py-20 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 mb-4">Restock requested</h1>
+      <p class="text-lg md:text-xl text-gray-600 mb-10">Thanks for letting us know!</p>
+      <a href={pages.home} class={LINK}>Back to the KCSU website</a>
+    </div>
+  </div>
+</BaseLayout>

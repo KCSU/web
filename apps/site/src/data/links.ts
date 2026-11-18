@@ -2,6 +2,7 @@ export const pages = {
   home: '/',
   exec: '/about-us/exec',
   societies: '/societies',
+  periodVend: '/resources/period-vend',
   academicSocieties: '/societies?category=academic',
   sportsSocieties: '/societies?category=sports',
   otherSocieties: '/societies?category=other',
