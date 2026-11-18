@@ -12,6 +12,13 @@
           "kcsu-status"
         ]
       }
+    },
+    "kcsu-site": {
+      "hosting": {
+        "site": [
+          "kcsu-site"
+        ]
+      }
     }
   }
 }

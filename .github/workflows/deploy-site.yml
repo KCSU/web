@@ -27,7 +27,7 @@ permissions:
   id-token: write
 
 env:
-  PROJECT: kcsu-admin
+  PROJECT: kcsu-site
   WIF_PROVIDER: projects/443929654886/locations/global/workloadIdentityPools/github/providers/kcsu-web-repo
   DEPLOY_SA: github-deploy-web@kcsu-admin.iam.gserviceaccount.com
   FIREBASE_TOOLS: firebase-tools@15.33.0
