@@ -16,7 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@kcsu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.8",
+    "astro": "^7.4.7",
     "preact": "^10.29.8",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3"

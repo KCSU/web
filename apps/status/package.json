@@ -12,7 +12,7 @@
     "@astrojs/preact": "^6.0.6",
     "@kcsu/ui": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.8",
+    "astro": "^7.4.7",
     "preact": "^10.29.8",
     "tailwindcss": "^4.3.3"
   },
