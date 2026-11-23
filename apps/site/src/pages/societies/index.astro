@@ -5,6 +5,7 @@ import Icon from '../../components/Icon';
 import Societies from '../../components/societies/Societies';
 import { fetchSocieties } from '../../lib/societies';
 import Link from '../../components/Link';
+import { external } from '../../data/links';
 
 // Fetched at build time.
 const { updated_at, societies } = await fetchSocieties();
@@ -38,7 +39,8 @@ const { updated_at, societies } = await fetchSocieties();
   </aside>
 
   <Fragment slot="note">
-    Is something here out of date? Email the Sports &amp; Societies Officer at
-    <Link href="mailto:sports.societies@kcsu.org.uk">sports.societies@kcsu.org.uk</Link>.
+    Run a society? To add a logo or update your society’s details, fill in the
+    <Link href={external.societyInfoForm}>society website information form</Link>. For anything else, email the
+    Sports &amp; Societies Officer at <Link href="mailto:sports.societies@kcsu.org.uk">sports.societies@kcsu.org.uk</Link>.
   </Fragment>
 </ContentLayout>

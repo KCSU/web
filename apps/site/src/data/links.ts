@@ -17,6 +17,7 @@ export const external = {
   hallBooking: 'https://docs.google.com/document/d/12-Jy5xKr6Pa4tNveaJyEHECNGHNNQv7NtNNDAGd9tv4/edit?tab=t.0#heading=h.ict5vuxw9vdv',
   supportInfoSheet: 'https://docs.google.com/document/d/1c6rFJkM2zboboTry1BjkvWEbXmZaCi6u/edit',
   feedbackForm: 'https://docs.google.com/forms/d/e/1FAIpQLScMROYSHkN8-zhdUpSlg7iiPbneCPHxYxKzy-Gt4Sk-WUA54w/viewform',
+  societyInfoForm: 'https://forms.gle/svMo5KYBYRPnDLjo8',
   eventsCalendar: 'https://calendar.google.com/calendar/u/0/embed?src=events@kcsu.org.uk&ctz=Europe/London',
 
   // KCSU services and socials
